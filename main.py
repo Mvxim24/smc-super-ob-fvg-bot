@@ -1,37 +1,37 @@
+import os
+import sys
 import asyncio
-from aiogram import Bot, Dispatcher
-from aiogram.filters import Command
-from aiogram.types import Message
-from config import BOT_TOKEN, CHAT_ID
-from scanner import scan_market
-import config
+from dotenv import load_dotenv
 
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher()
+print("=== БОТ НАЧИНАЕТ ЗАПУСК ===")
+print(f"Python version: {sys.version}")
 
-@dp.message(Command("start"))
-async def start(message: Message):
-    await message.answer("✅ <b>Super OB + FVG Бот запущен и готов к работе!</b>", parse_mode="HTML")
+# Загружаем .env
+load_dotenv()
+print("✅ .env загружен")
 
-@dp.message(Command("status"))
-async def status(message: Message):
-    await message.answer(f"✅ Бот активен\nСимволов: {len(config.SYMBOLS)}\nТФ: {config.TIMEFRAMES}\nИнтервал сканирования: {config.SCAN_INTERVAL_SECONDS} сек")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
-@dp.message(Command("scan"))
-async def manual_scan(message: Message):
-    await message.answer("🔄 Запускаю ручное сканирование...")
-    await scan_market(bot, CHAT_ID)
-    await message.answer("✅ Сканирование завершено")
+print(f"BOT_TOKEN: {'✅ Есть' if BOT_TOKEN and len(BOT_TOKEN) > 20 else '❌ НЕ НАЙДЕН'}")
+print(f"CHAT_ID: {'✅ Есть' if CHAT_ID else '❌ НЕ НАЙДЕН'}")
 
+if not BOT_TOKEN or not CHAT_ID:
+    print("❌ ОШИБКА: BOT_TOKEN или CHAT_ID отсутствуют!")
+    sys.exit(1)
+
+print("✅ Все переменные окружения на месте")
+print("🤖 Бот должен работать...")
+
+# Простой тестовый запуск
 async def main():
-    print("🤖 Бот успешно запущен!")
-    asyncio.create_task(scanner_loop())
-    await dp.start_polling(bot)
-
-async def scanner_loop():
+    print("✅ Асинхронный запуск прошёл успешно")
     while True:
-        await scan_market(bot, CHAT_ID)
-        await asyncio.sleep(config.SCAN_INTERVAL_SECONDS)
+        print(f"[{asyncio.get_event_loop().time():.0f}] Бот живой...")
+        await asyncio.sleep(30)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print(f"КРИТИЧЕСКАЯ ОШИБКА: {e}")
