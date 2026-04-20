@@ -6,7 +6,7 @@ print("=== БОТ НАЧИНАЕТ ЗАПУСК ===")
 print(f"Python version: {sys.version}")
 
 # --- ВСТАВЬТЕ ВАШИ ДАННЫЕ ТУТ ---
-BOT_TOKEN = "8548326510:AAEZh6U0xOhBdV_uZ-5Wd8cTjSand-YYUes"
+BOT_TOKEN = "8548326510:AAGV7zU_kGL3scX6xGgU9BehGqTLjgSwSzI"
 CHAT_ID = "8548326510"
 # -------------------------------
 
